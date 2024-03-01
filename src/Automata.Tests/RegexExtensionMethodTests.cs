@@ -1112,25 +1112,26 @@ namespace Automata.Tests
                 Assert.IsTrue(r_matches[i].Index == matches[i].Item1 && r_matches[i].Length == matches[i].Item2);
         }
 
-        System.Runtime.Serialization.Formatters.Soap.SoapFormatter soap =
-            new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
+        // System.Runtime.Serialization.Formatters.Soap.SoapFormatter soap =
+        //     new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
 
         [TestMethod]
         public void TestWatchdogs()
         {
-            var r = new Regex("(?i:mar{4}gus|mar[gG]us|mar[kK]us|mam+a)");
-            var matcher_ = (SymbolicRegexUInt64)r.Compile();
-            matcher_.Serialize("test.soap", soap);
-            var matcher = (SymbolicRegexUInt64)RegexMatcher.Deserialize("test.soap", soap);
-            var input = "xxxxxxxxmarxxxxxxxmarrrrgusxxxmaRrrrgusxyzmarkusxxx";
-            var matches = matcher.Matches(input);
-            Assert.IsTrue(matches.Length == 3);
-            var regex_matches = r.Matches(input);
-            Assert.IsTrue(regex_matches.Count == 3);
-            for (int i = 0; i < 3; i++)
-                Assert.IsTrue(matches[i].Item1 == regex_matches[i].Index && matches[i].Item2 == regex_matches[i].Length);
-            //matcher.Pattern.ShowGraph(0,"regex_with_Watchdogs");
-            //matcher.DotStarPattern.ShowGraph(0, "dotstar_regex_with_Watchdogs", false, true);
+            throw new NotSupportedException("todo: soap format not supported");
+            // var r = new Regex("(?i:mar{4}gus|mar[gG]us|mar[kK]us|mam+a)");
+            // var matcher_ = (SymbolicRegexUInt64)r.Compile();
+            // matcher_.Serialize("test.soap", soap);
+            // var matcher = (SymbolicRegexUInt64)RegexMatcher.Deserialize("test.soap", soap);
+            // var input = "xxxxxxxxmarxxxxxxxmarrrrgusxxxmaRrrrgusxyzmarkusxxx";
+            // var matches = matcher.Matches(input);
+            // Assert.IsTrue(matches.Length == 3);
+            // var regex_matches = r.Matches(input);
+            // Assert.IsTrue(regex_matches.Count == 3);
+            // for (int i = 0; i < 3; i++)
+            //     Assert.IsTrue(matches[i].Item1 == regex_matches[i].Index && matches[i].Item2 == regex_matches[i].Length);
+            // //matcher.Pattern.ShowGraph(0,"regex_with_Watchdogs");
+            // //matcher.DotStarPattern.ShowGraph(0, "dotstar_regex_with_Watchdogs", false, true);
         }
 
         [TestMethod]

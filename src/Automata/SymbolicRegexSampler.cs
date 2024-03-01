@@ -4,7 +4,7 @@ using Microsoft.Automata.Rex;
 
 namespace Microsoft.Automata
 {
-    class SymbolicRegexSampler<S>
+    internal class SymbolicRegexSampler<S>
     {
 
         // Inverse of pobability of taking a corner 

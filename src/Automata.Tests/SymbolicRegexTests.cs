@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
-
 using Microsoft.Automata;
 using Microsoft.Automata.Generated;
 using Microsoft.Automata.Rex;
 using Microsoft.Automata.Utilities;
-
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using System.Security.Cryptography;
-using System.Runtime.Serialization.Formatters.Soap;
 
 namespace Automata.Tests
 {
@@ -872,7 +868,7 @@ namespace Automata.Tests
     [TestClass]
     public class RegexMatcherTests
     {
-        SoapFormatter sf = new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
+        // SoapFormatter sf = new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
         [TestMethod]
         public void TestSRM()
         {

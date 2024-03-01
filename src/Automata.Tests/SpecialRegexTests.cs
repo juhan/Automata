@@ -37,22 +37,17 @@ namespace Automata.Tests
             throw new NotImplementedException();
         }
 
-        public override void BeginTimer(string timerName)
+        public override void Write(string? message)
         {
             throw new NotImplementedException();
         }
 
-        public override System.Data.Common.DbConnection DataConnection
+        public override void Write(string format, params object?[] args)
         {
-            get { throw new NotImplementedException(); }
+            throw new NotImplementedException();
         }
 
-        public override System.Data.DataRow DataRow
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override void EndTimer(string timerName)
+        public override void WriteLine(string? message)
         {
             throw new NotImplementedException();
         }

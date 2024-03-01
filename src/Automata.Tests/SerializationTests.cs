@@ -14,7 +14,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization.Formatters.Soap;
 using System.IO;
 using System.Web;
 
@@ -187,18 +186,19 @@ namespace Automata.Tests
             var r3 = new Regex(@"[^\s]{3,5}");
             //creates a conjunction-pattern of the three regexes, 
             //order is not important, r2.Compile(r3, r1) is the same
-            var m1 = r1.Compile(r2, r3);
-            var s1 = new FileStream("test.soap", FileMode.Create);
-            new SoapFormatter().Serialize(s1, m1);
-            s1.Close();
-            var s2 = new FileStream("test.soap", FileMode.Open);
-            var m2 = (IMatcher)new SoapFormatter().Deserialize(s2);
-            s2.Close();
-            var input = "asd 1X1s dsd 77777 AAAAA sdsd 3B3sbsbsb ggg";
-            var all = m2.Matches(input);
-            Assert.IsTrue(all.Length == 2);
-            Assert.AreEqual<string>("1X1s", input.Substring(all[0].Item1, all[0].Item2));
-            Assert.AreEqual<string>("3B3sb", input.Substring(all[1].Item1, all[1].Item2));
+            throw new NotSupportedException("todo: soap format not supported");
+            // var m1 = r1.Compile(r2, r3);
+            // var s1 = new FileStream("test.soap", FileMode.Create);
+            // new SoapFormatter().Serialize(s1, m1);
+            // s1.Close();
+            // var s2 = new FileStream("test.soap", FileMode.Open);
+            // var m2 = (IMatcher)new SoapFormatter().Deserialize(s2);
+            // s2.Close();
+            // var input = "asd 1X1s dsd 77777 AAAAA sdsd 3B3sbsbsb ggg";
+            // var all = m2.Matches(input);
+            // Assert.IsTrue(all.Length == 2);
+            // Assert.AreEqual<string>("1X1s", input.Substring(all[0].Item1, all[0].Item2));
+            // Assert.AreEqual<string>("3B3sb", input.Substring(all[1].Item1, all[1].Item2));
         }
 
         [TestMethod]
@@ -228,58 +228,61 @@ namespace Automata.Tests
         [TestMethod]
         public void TestSerialization_Roundtrip_SingleRegex_OneMatchAtATime_Soap()
         {
-            var m1 = new Regex(@"[0-9]+").Compile();
-            var s1 = new FileStream("test.soap", FileMode.Create);
-            new SoapFormatter().Serialize(s1, m1);
-            s1.Close();
-            var s2 = new FileStream("test.soap", FileMode.Open);
-            var m2 = (IMatcher)new SoapFormatter().Deserialize(s2);
-            s2.Close();
-            var input = "acac1111ghdfhdg22dfd3fd";
-            //first match
-            var first = m2.Matches(input, 1, 0);
-            Assert.AreEqual<string>("1111", input.Substring(first[0].Item1, first[0].Item2));
-            //second match
-            var start2 = first[0].Item1 + first[0].Item2 + 1;
-            var second = m2.Matches(input, 1, start2);
-            Assert.AreEqual<string>("22", input.Substring(second[0].Item1, second[0].Item2));
-            //third match
-            var start3 = second[0].Item1 + second[0].Item2 + 1;
-            var third = m2.Matches(input, 1, start3);
-            Assert.AreEqual<string>("3", input.Substring(third[0].Item1, third[0].Item2));
+            throw new NotSupportedException("todo: soap format not supported");
+            // var m1 = new Regex(@"[0-9]+").Compile();
+            // var s1 = new FileStream("test.soap", FileMode.Create);
+            // new SoapFormatter().Serialize(s1, m1);
+            // s1.Close();
+            // var s2 = new FileStream("test.soap", FileMode.Open);
+            // var m2 = (IMatcher)new SoapFormatter().Deserialize(s2);
+            // s2.Close();
+            // var input = "acac1111ghdfhdg22dfd3fd";
+            // //first match
+            // var first = m2.Matches(input, 1, 0);
+            // Assert.AreEqual<string>("1111", input.Substring(first[0].Item1, first[0].Item2));
+            // //second match
+            // var start2 = first[0].Item1 + first[0].Item2 + 1;
+            // var second = m2.Matches(input, 1, start2);
+            // Assert.AreEqual<string>("22", input.Substring(second[0].Item1, second[0].Item2));
+            // //third match
+            // var start3 = second[0].Item1 + second[0].Item2 + 1;
+            // var third = m2.Matches(input, 1, start3);
+            // Assert.AreEqual<string>("3", input.Substring(third[0].Item1, third[0].Item2));
         }
 
         [TestMethod]
         public void TestSerializeSimplified()
         {
-            var regex = new Regex(@"\w\d+");
-            var regex_simpl = new Regex(@"[BA]A+");
-            var m1 = regex.Compile() as SymbolicRegexUInt64;
-            var s1 = new FileStream("test.soap", FileMode.Create);
-            m1.SerializeSimplified(s1, new SoapFormatter());
-            s1.Close();
-            var m2 = RegexMatcher.Deserialize("test.soap", new SoapFormatter());
-            var input = "zzzBBBBAAAAzzzz";
-            //first match
-            var matches = m2.Matches(input);
-            Assert.IsTrue(matches.Length == 1);
-            var expected = regex_simpl.Matches(input);
-            Assert.IsTrue(expected.Count == 1);
-            Assert.IsTrue(expected[0].Value == input.Substring(matches[0].Item1, matches[0].Item2));
+            throw new NotSupportedException("todo: soap format not supported");
+            // var regex = new Regex(@"\w\d+");
+            // var regex_simpl = new Regex(@"[BA]A+");
+            // var m1 = regex.Compile() as SymbolicRegexUInt64;
+            // var s1 = new FileStream("test.soap", FileMode.Create);
+            // m1.SerializeSimplified(s1, new SoapFormatter());
+            // s1.Close();
+            // var m2 = RegexMatcher.Deserialize("test.soap", new SoapFormatter());
+            // var input = "zzzBBBBAAAAzzzz";
+            // //first match
+            // var matches = m2.Matches(input);
+            // Assert.IsTrue(matches.Length == 1);
+            // var expected = regex_simpl.Matches(input);
+            // Assert.IsTrue(expected.Count == 1);
+            // Assert.IsTrue(expected[0].Value == input.Substring(matches[0].Item1, matches[0].Item2));
         }
 
         [TestMethod]
         public void TestSerializeDotPlus()
         {
-            var regex = new Regex(@".+", RegexOptions.Singleline);
-            var m1 = regex.Compile(true,false) as SymbolicRegexUInt64;
-            var s1 = new FileStream("dotplus.soap", FileMode.Create);
-            m1.Serialize(s1, new SoapFormatter());
-            s1.Close();
-            var s2 = new FileStream("dotplus.soap", FileMode.Open);
-            var m2 = (SymbolicRegexUInt64)new SoapFormatter().Deserialize(s2);
-            s2.Close();
-            Assert.IsTrue(m2.Pattern.IsPlus);
+            throw new NotSupportedException("todo: soap format not supported");
+            // var regex = new Regex(@".+", RegexOptions.Singleline);
+            // var m1 = regex.Compile(true,false) as SymbolicRegexUInt64;
+            // var s1 = new FileStream("dotplus.soap", FileMode.Create);
+            // m1.Serialize(s1, new SoapFormatter());
+            // s1.Close();
+            // var s2 = new FileStream("dotplus.soap", FileMode.Open);
+            // var m2 = (SymbolicRegexUInt64)new SoapFormatter().Deserialize(s2);
+            // s2.Close();
+            // Assert.IsTrue(m2.Pattern.IsPlus);
         }
 
         //[TestMethod]
@@ -333,21 +336,22 @@ namespace Automata.Tests
                         //bool monadic = !m.Pattern.ExistsNode(isNonMonadic);
                         //if (monadic)
                         {
-                            var s = new FileStream(dir_batch + "/r" + (regexes2.Count).ToString() + ".soap", FileMode.Create);
-                            if (simplify)
-                                m.SerializeSimplified(s, new SoapFormatter());
-                            else
-                                m.Serialize(s, new SoapFormatter());
-                            s.Close();
-                            var s2 = new FileStream(dir_batch + "/r" + (regexes2.Count).ToString() + ".soap", FileMode.Open);
-                            var m2 = (SymbolicRegexUInt64)new SoapFormatter().Deserialize(s2);
-                            s2.Close();
-                            //var aut = m2.Pattern.Explore();
-                            var r2 = m2.Pattern.ToString();
-                            if (regexes2_.Add(r2))
-                            {
-                                regexes2.Add(r2);
-                            }
+                            throw new NotSupportedException("todo: soap format not supported");
+                            // var s = new FileStream(dir_batch + "/r" + (regexes2.Count).ToString() + ".soap", FileMode.Create);
+                            // if (simplify)
+                            //     m.SerializeSimplified(s, new SoapFormatter());
+                            // else
+                            //     m.Serialize(s, new SoapFormatter());
+                            // s.Close();
+                            // var s2 = new FileStream(dir_batch + "/r" + (regexes2.Count).ToString() + ".soap", FileMode.Open);
+                            // var m2 = (SymbolicRegexUInt64)new SoapFormatter().Deserialize(s2);
+                            // s2.Close();
+                            // //var aut = m2.Pattern.Explore();
+                            // var r2 = m2.Pattern.ToString();
+                            // if (regexes2_.Add(r2))
+                            // {
+                            //     regexes2.Add(r2);
+                            // }
                         }
                     }
                 }
@@ -365,18 +369,20 @@ namespace Automata.Tests
 
         public static void SerializeObjectToFile_soap(string file, object obj)
         {
-            IFormatter formatter = new SoapFormatter();
-            Stream stream = new FileStream(file, FileMode.Create, FileAccess.Write, FileShare.None);
-            formatter.Serialize(stream, obj);
-            stream.Close();
+            throw new NotSupportedException("todo: soap format not supported");
+            // IFormatter formatter = new SoapFormatter();
+            // Stream stream = new FileStream(file, FileMode.Create, FileAccess.Write, FileShare.None);
+            // formatter.Serialize(stream, obj);
+            // stream.Close();
         }
 
         public static void SerializeObjectToFile_osf(string file, object obj)
         {
-            IFormatter formatter = new System.Web.UI.ObjectStateFormatter();
-            Stream stream = new FileStream(file, FileMode.Create, FileAccess.Write, FileShare.None);
-            formatter.Serialize(stream, obj);
-            stream.Close();
+            throw new NotSupportedException("todo: soap format not supported");
+            // IFormatter formatter = new System.Web.UI.ObjectStateFormatter();
+            // Stream stream = new FileStream(file, FileMode.Create, FileAccess.Write, FileShare.None);
+            // formatter.Serialize(stream, obj);
+            // stream.Close();
         }
 
         public static object DeserializeObjectFromFile_bin(string file)
@@ -390,20 +396,22 @@ namespace Automata.Tests
 
         public static object DeserializeObjectFromFile_soap(string file)
         {
-            IFormatter formatter = new SoapFormatter();
-            Stream stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.None);
-            object obj = formatter.Deserialize(stream);
-            stream.Close();
-            return obj;
+            throw new NotSupportedException("todo: soap format not supported");
+            // IFormatter formatter = new SoapFormatter();
+            // Stream stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.None);
+            // object obj = formatter.Deserialize(stream);
+            // stream.Close();
+            // return obj;
         }
 
         public static object DeserializeObjectFromFile_osf(string file)
         {
-            IFormatter formatter = new System.Web.UI.ObjectStateFormatter();
-            Stream stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.None);
-            object obj = formatter.Deserialize(stream);
-            stream.Close();
-            return obj;
+            throw new NotSupportedException("todo: soap format not supported");
+            // IFormatter formatter = new System.Web.UI.ObjectStateFormatter();
+            // Stream stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.None);
+            // object obj = formatter.Deserialize(stream);
+            // stream.Close();
+            // return obj;
         }
 
         [TestMethod]
@@ -429,21 +437,22 @@ namespace Automata.Tests
         [TestMethod]
         public void TestSerialization_MatchCorrectSurrogatePair()
         {
-            var regex1 = new System.Text.RegularExpressions.Regex(@"[\uD800-\uDBFF][\uDC00-\uDFFF]"
-                , System.Text.RegularExpressions.RegexOptions.IgnoreCase
-                );
-            var matcher1 = regex1.Compile(); 
-            matcher1.Serialize("surrogatepair.soap", new System.Runtime.Serialization.Formatters.Soap.SoapFormatter());
-            var matcher2 = RegexMatcher.Deserialize("surrogatepair.soap", new System.Runtime.Serialization.Formatters.Soap.SoapFormatter());
+            throw new NotSupportedException("todo: soap format not supported");
+            // var regex1 = new System.Text.RegularExpressions.Regex(@"[\uD800-\uDBFF][\uDC00-\uDFFF]"
+            //     , System.Text.RegularExpressions.RegexOptions.IgnoreCase
+            //     );
+            // var matcher1 = regex1.Compile(); 
+            // matcher1.Serialize("surrogatepair.soap", new System.Runtime.Serialization.Formatters.Soap.SoapFormatter());
+            // var matcher2 = RegexMatcher.Deserialize("surrogatepair.soap", new System.Runtime.Serialization.Formatters.Soap.SoapFormatter());
 
-            string input = "_\uD809\uDD03_";
+            // string input = "_\uD809\uDD03_";
 
-            var res1 = matcher1.Matches(input);
-            var res2 = matcher2.Matches(input);
+            // var res1 = matcher1.Matches(input);
+            // var res2 = matcher2.Matches(input);
 
-            Assert.IsTrue(res1[0].Item1 == 1 && res1[0].Item2 == 2);
-            Assert.AreEqual(res1.Length, res2.Length);
-            Assert.IsTrue(res1[0].Equals(res2[0]));
+            // Assert.IsTrue(res1[0].Item1 == 1 && res1[0].Item2 == 2);
+            // Assert.AreEqual(res1.Length, res2.Length);
+            // Assert.IsTrue(res1[0].Equals(res2[0]));
         }
 
         [TestMethod]
@@ -621,19 +630,21 @@ namespace Automata.Tests
 
         void SerializeAndPrintStats(RegexMatcher matcher, string info)
         {
-            var t = System.Environment.TickCount;
-            matcher.Serialize("test.soap", new SoapFormatter());
-            t = System.Environment.TickCount - t;
-            Console.WriteLine("{1} serializaton time={0}ms", t, info);
+            throw new NotSupportedException("todo: soap format not supported");
+            // var t = System.Environment.TickCount;
+            // matcher.Serialize("test.soap", new SoapFormatter());
+            // t = System.Environment.TickCount - t;
+            // Console.WriteLine("{1} serializaton time={0}ms", t, info);
         }
 
         RegexMatcher DeserializeAndPrintStats(string info)
         {
-            var t = System.Environment.TickCount;
-            var rm = RegexMatcher.Deserialize("test.soap", new SoapFormatter());
-            t = System.Environment.TickCount - t;
-            Console.WriteLine("{1} deserializaton time={0}ms", t, info);
-            return rm;
+            throw new NotSupportedException("todo: soap format not supported");
+            // var t = System.Environment.TickCount;
+            // var rm = RegexMatcher.Deserialize("test.soap", new SoapFormatter());
+            // t = System.Environment.TickCount - t;
+            // Console.WriteLine("{1} deserializaton time={0}ms", t, info);
+            // return rm;
         }
 
         RegexMatcher CompileAndPrintStats(Regex regex, string info)
