@@ -29,12 +29,12 @@ namespace Microsoft.Automata.DirectedGraphs
             sw.Close();
         }
 
-        static bool __tried_to_load_VS = false;
+        // static bool __tried_to_load_VS = false;
         /// <summary>
         /// Top-level Visual Studio automation object model, if available.
         /// Used to close and open dgml graph files.
         /// </summary>
-        static object VS = null;
+        // static object VS = null;
 
         /// <summary>
         /// Write the automaton in dgml format in the current directory and open the file in a new process.

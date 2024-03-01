@@ -2602,7 +2602,7 @@ namespace Microsoft.Automata
             //walk back to the accepting state of Ar
             int p;
             ushort c;
-            int step = 0;
+            // int step = 0;
             int codepoint;
             while (i >= match_start_boundary)
             {

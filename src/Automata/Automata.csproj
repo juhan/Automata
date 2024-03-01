@@ -29,12 +29,12 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup> -->
     <ItemGroup>
-        <Reference Include="System" />
-        <Reference Include="System.Numerics" />
-        <Reference Include="System.Numerics.Vectors" />
-        <Reference Include="System.Runtime.CompilerServices.Unsafe" />
-        <Reference Include="System.Web" />
-        <Reference Include="System.CodeDom" />
+        <!-- <Reference Include="System" /> -->
+        <!-- <Reference Include="System.Numerics" /> -->
+        <!-- <Reference Include="System.Numerics.Vectors" /> -->
+        <!-- <Reference Include="System.Runtime.CompilerServices.Unsafe" /> -->
+        <!-- <Reference Include="System.Web" /> -->
+        <!-- <Reference Include="System.CodeDom" /> -->
     </ItemGroup>
     <ItemGroup>
         <Compile Include="BasicCountingSet.cs" />

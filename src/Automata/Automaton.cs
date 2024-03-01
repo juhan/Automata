@@ -1020,12 +1020,12 @@ namespace Microsoft.Automata
 
         static Automaton<T> MkProduct(Automaton<T> a, Automaton<T> b, IBooleanAlgebraPositive<T> solver, int timeout)
         {
-            long timeout1 = Microsoft.Automata.Utilities.HighTimer.Frequency * ((long)timeout / (long)1000);
-            long timeoutLimit;
-            if (timeout > 0)
-                timeoutLimit = Utilities.HighTimer.Now + timeout1;
-            else
-                timeoutLimit = 0;
+            // long timeout1 = Microsoft.Automata.Utilities.HighTimer.Frequency * ((long)timeout / (long)1000);
+            // long timeoutLimit;
+            // if (timeout > 0)
+            //     timeoutLimit = Utilities.HighTimer.Now + timeout1;
+            // else
+            long timeoutLimit = 0;
 
             a = a.RemoveEpsilons(solver.MkOr);
             b = b.RemoveEpsilons(solver.MkOr);
