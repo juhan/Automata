@@ -111,14 +111,16 @@ namespace Microsoft.Automata.DirectedGraphs
             try
             {
                 //first try to access VS 2015
-                VS = System.Runtime.InteropServices.Marshal.GetActiveObject("VisualStudio.DTE.14.0");
+                //VS = System.Runtime.InteropServices.Marshal.GetActiveObject("VisualStudio.DTE.14.0");
+                throw new Exception("Marshal.GetActiveObject is not available in .Net core");
             }
             catch (Exception)
             {
                 try
                 {
                     //second try tom access VS 2017
-                    VS = System.Runtime.InteropServices.Marshal.GetActiveObject("VisualStudio.DTE.15.0");
+                    //VS = System.Runtime.InteropServices.Marshal.GetActiveObject("VisualStudio.DTE.15.0");
+                    throw new Exception("Marshal.GetActiveObject is not available in .Net core");
                 }
                 catch (Exception)
                 {

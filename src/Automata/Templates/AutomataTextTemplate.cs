@@ -14,6 +14,8 @@ namespace Microsoft.Automata.Templates
     using System.Text;
     using Microsoft.Automata;
     using System;
+    using System.CodeDom;
+    using System.CodeDom.Compiler;
     
     /// <summary>
     /// Class to produce the template output
