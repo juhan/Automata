@@ -1,34 +1,43 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>10.0</LangVersion>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+<!--        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>-->
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <GenerateProgramFile>false</GenerateProgramFile>
-        <IsTestProject>true</IsTestProject>
+<!--        <GenerateProgramFile>false</GenerateProgramFile>-->
+<!--        <IsTestProject>true</IsTestProject>-->
+        <EnableMSTestRunner>true</EnableMSTestRunner>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
     </PropertyGroup>
 
 
     <ItemGroup>
-        <ProjectReference Include="..\Automata\Automata.csproj" />
+        <ProjectReference Include="..\Automata\Automata.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="coverlet.collector" Version="6.0.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-        <PackageReference Include="Microsoft.TestPlatform" Version="17.4.1" />
-        <PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
-        <PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
-
+        <PackageReference Include="coverlet.collector" Version="6.0.0"/>
+<!--        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>-->
+<!--        <PackageReference Include="Microsoft.TestPlatform" Version="17.4.1"/>-->
+<!--        <PackageReference Include="MSTest.TestAdapter" Version="3.2.2" />-->
+<!--        <PackageReference Include="MSTest.TestFramework" Version="3.2.2"/>-->
+<!--        <PackageReference Include="MSTest" Version="3.2.2"/>-->
+        <PackageReference Include="MSTest" Version="3.2.0"/>
+        <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.10.1"/>
+        
         <!-- <PackageReference Include="coverlet.collector" Version="6.0.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-        <PackageReference Include="NUnit" Version="3.14.0" />
-        <PackageReference Include="NUnit.Analyzers" Version="3.9.0" />
-        <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" /> -->
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />  -->
+<!--        <PackageReference Include="NUnit" Version="3.14.0"/>-->
+<!--        <PackageReference Include="NUnit.Analyzers" Version="3.9.0"/>-->
+<!--        <PackageReference Include="NUnit3TestAdapter" Version="4.5.0"/>-->
+    </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Properties\" />
     </ItemGroup>
 
 
