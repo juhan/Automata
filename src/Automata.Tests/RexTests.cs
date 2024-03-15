@@ -88,27 +88,27 @@ namespace Automata.Tests
             }
         }
 
-        [TestMethod]
-        public void TestLazyVsEagerLoop()
-        {
-            //eager case
-            var r = new Regex(@"[a-z]*a+[^y]");
-            var s = "000xxxaaayyaaazzzaaawww";
-            var matches = r.Matches(s);
-            Assert.IsTrue(matches.Count == 1);
-            var m0 = matches[0];
-            Assert.IsTrue(matches[0].Value == "xxxaaayyaaazzzaaaw");
-            var sr_ = r.Compile();
-            Automata.Tests.SerializationTests.SerializeObjectToFile_soap("test.soap", sr_);
-            var sr = (IMatcher)Automata.Tests.SerializationTests.DeserializeObjectFromFile_soap("test.soap");
-            var sr_matches = sr.Matches(s);
-            Assert.IsTrue(sr_matches.Length == 1);
-            Assert.IsTrue(s.Substring(sr_matches[0].Item1, sr_matches[0].Item2) == "xxxaaayyaaazzzaaaw");
-            //lazy case
-            var r1 = new Regex(@"[a-z]*?a+[^y]");
-            var matches1 = r1.Matches(s);
-            Assert.IsTrue(matches1.Count == 3);
-        }
+        // [TestMethod]
+        // public void TestLazyVsEagerLoop()
+        // {
+        //     //eager case
+        //     var r = new Regex(@"[a-z]*a+[^y]");
+        //     var s = "000xxxaaayyaaazzzaaawww";
+        //     var matches = r.Matches(s);
+        //     Assert.IsTrue(matches.Count == 1);
+        //     var m0 = matches[0];
+        //     Assert.IsTrue(matches[0].Value == "xxxaaayyaaazzzaaaw");
+        //     var sr_ = r.Compile();
+        //     Automata.Tests.SerializationTests.SerializeObjectToFile_soap("test.soap", sr_);
+        //     var sr = (IMatcher)Automata.Tests.SerializationTests.DeserializeObjectFromFile_soap("test.soap");
+        //     var sr_matches = sr.Matches(s);
+        //     Assert.IsTrue(sr_matches.Length == 1);
+        //     Assert.IsTrue(s.Substring(sr_matches[0].Item1, sr_matches[0].Item2) == "xxxaaayyaaazzzaaaw");
+        //     //lazy case
+        //     var r1 = new Regex(@"[a-z]*?a+[^y]");
+        //     var matches1 = r1.Matches(s);
+        //     Assert.IsTrue(matches1.Count == 3);
+        // }
 
 
         [TestMethod]

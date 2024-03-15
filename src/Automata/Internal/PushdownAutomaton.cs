@@ -555,7 +555,7 @@ namespace Microsoft.Automata
             else if (nfas.Length == 1)
                 return Intersect1(nfas[0]);
             else
-                return Intersect1(new LazyProductAutomaton<T>(nfas));
+                return Intersect1(new LazyProductAutomaton(nfas));
         }
 
         /// <summary>
@@ -635,7 +635,7 @@ namespace Microsoft.Automata
             return res;
         }
 
-        internal class LazyProductAutomaton<T> : IMinimalAutomaton<T>
+        internal class LazyProductAutomaton : IMinimalAutomaton<T>
         {
             IMinimalAutomaton<T>[] nfas;
             IBooleanAlgebra<T> solver;

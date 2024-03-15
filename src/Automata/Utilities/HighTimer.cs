@@ -11,24 +11,24 @@ namespace Microsoft.Automata.Utilities
     /// </summary>
     internal static class HighTimer
     {
-        [SuppressUnmanagedCodeSecurity]
-        sealed class Win32
-        {
-            [DllImport("Kernel32.dll"), SuppressUnmanagedCodeSecurity]
-            public static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
+        // [SuppressUnmanagedCodeSecurity]
+        // sealed class Win32
+        // {
+        //     [DllImport("Kernel32.dll"), SuppressUnmanagedCodeSecurity]
+        //     public static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
 
-            [DllImport("Kernel32.dll"), SuppressUnmanagedCodeSecurity]
-            public static extern bool QueryPerformanceFrequency(out long lpFrequency);
-        }
+        //     [DllImport("Kernel32.dll"), SuppressUnmanagedCodeSecurity]
+        //     public static extern bool QueryPerformanceFrequency(out long lpFrequency);
+        // }
 
         private readonly static long frequency;
         static HighTimer()
         {
-            if (!Win32.QueryPerformanceFrequency(out frequency))
-            {
-                // high-performance counter not supported
-                throw new Exception();
-            }
+            // if (!Win32.QueryPerformanceFrequency(out frequency))
+            // {
+            //     // high-performance counter not supported
+            //     throw new Exception();
+            // }
         }
 
         /// <summary>
@@ -48,10 +48,11 @@ namespace Microsoft.Automata.Utilities
         {
             get
             {
-                long startTime;
-                if (!Win32.QueryPerformanceCounter(out startTime))
-                    throw new AutomataException("QueryPerformanceCounter failed");
-                return startTime;
+                
+                // long startTime;
+                // if (!Win32.QueryPerformanceCounter(out startTime))
+                //     throw new AutomataException("QueryPerformanceCounter failed");
+                return DateTime.Now.Ticks;
             }
         }
 

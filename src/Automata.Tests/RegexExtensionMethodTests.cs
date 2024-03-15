@@ -793,159 +793,159 @@ namespace Automata.Tests
             Console.WriteLine(t);
         }
 
-        [TestMethod]
-        public void TestRegex_Compile_Serialize_Deserialize_Match_Regexes()
-        {
-            TestRegex_Compile_Serialize_Deserialize_Match_Rexexes_helper();
-        }
+        // [TestMethod]
+        // public void TestRegex_Compile_Serialize_Deserialize_Match_Regexes()
+        // {
+        //     TestRegex_Compile_Serialize_Deserialize_Match_Rexexes_helper();
+        // }
 
-        [TestMethod]
-        public void TestRegex_Compile_Serialize_Deserialize_Match_Regexes_1()
-        {
-            TestRegex_Compile_Serialize_Deserialize_Match_Rexexes_helper(1);
-        }
-
-
-        public void TestRegex_Compile_Serialize_Deserialize_Match_Rexexes_helper(int matchlimit = 0)
-        {
-            RegexOptions options = RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture;
-
-            //1 sec timeout for matching
-            Regex[] regexes_ = Array.ConvertAll(File.ReadAllLines(regexesWithoutAnchorsFile), x => new Regex(x, options, new TimeSpan(0, 0, 5)));
-            string whynot;
-            Regex[] regexes = Array.FindAll(regexes_, r => r.IsCompileSupported(out whynot));
-            Regex[] regexes10 = Array.ConvertAll(regexes_, x => new Regex(x.ToString(), x.Options, new TimeSpan(0, 0, 10)));
-
-            //var srs = (SymbolicRegexMatcher<BDD>[])Array.ConvertAll(regexes, r => r.Compile());
-
-            ClearLog();
-
-            int MAX = 10;
-
-            //make sure k is at most regexes.Length, regexes.Length is around 1600
-            int k = (regexes.Length < MAX ? regexes.Length : MAX);
-
-            int sr_comp_ms = System.Environment.TickCount;
-            var srs = new IMatcher[k];
-            for (int i = 0; i < k; i++)
-                srs[i] = regexes[i].Compile();
-            sr_comp_ms = System.Environment.TickCount - sr_comp_ms;
-
-            Log("Compile time(ms): " + sr_comp_ms);
-
-            //var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            //var formatter = new System.Web.UI.ObjectStateFormatter();
-            //--- soap formatter does not support generic types
-            //var formatter = new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
-
-            int sr_ser_ms = System.Environment.TickCount;
-            for (int i = 0; i < k; i++)
-                SerializationTests.SerializeObjectToFile_soap(string.Format("sr{0}.soap", i), srs[i]);
-            sr_ser_ms = System.Environment.TickCount - sr_ser_ms;
-
-            Log("Serialization time(ms): " + sr_ser_ms);
-
-            int sr_deser_ms = System.Environment.TickCount;
-            var srs_ = new IMatcher[k];
-            for (int i = 0; i < k; i++)
-                srs_[i] = (IMatcher)SerializationTests.DeserializeObjectFromFile_soap(string.Format("sr{0}.soap", i));
-            sr_deser_ms = System.Environment.TickCount - sr_deser_ms;
-
-            Log("Deserialization time(ms): " + sr_deser_ms);
-
-            var str = File.ReadAllText(inputFile);
-
-            //first filter out those regexes that cause tiomeout in .net
-
-            HashSet<int> timeouts = new HashSet<int>();
-            timeouts.Add(4);
-            timeouts.Add(137);
+        // [TestMethod]
+        // public void TestRegex_Compile_Serialize_Deserialize_Match_Regexes_1()
+        // {
+        //     TestRegex_Compile_Serialize_Deserialize_Match_Rexexes_helper(1);
+        // }
 
 
-            //some regexes cause timeouts, exclude those
-            //--- .net ---
-            for (int i = 0; i < k; i++)
-            {
-                if (!timeouts.Contains(i))
-                    try
-                    {
-                        var re_matches = regexes[i].Matches(str);
-                        int tmp = re_matches.Count;
-                        Log("ok: " + i);
-                    }
-                    catch (System.Text.RegularExpressions.RegexMatchTimeoutException)
-                    {
-                        timeouts.Add(i);
-                        Log("timeout: " + i);
-                    }
-            }
+        // public void TestRegex_Compile_Serialize_Deserialize_Match_Rexexes_helper(int matchlimit = 0)
+        // {
+        //     RegexOptions options = RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture;
 
-            //-------------
+        //     //1 sec timeout for matching
+        //     Regex[] regexes_ = Array.ConvertAll(File.ReadAllLines(regexesWithoutAnchorsFile), x => new Regex(x, options, new TimeSpan(0, 0, 5)));
+        //     string whynot;
+        //     Regex[] regexes = Array.FindAll(regexes_, r => r.IsCompileSupported(out whynot));
+        //     Regex[] regexes10 = Array.ConvertAll(regexes_, x => new Regex(x.ToString(), x.Options, new TimeSpan(0, 0, 10)));
 
+        //     //var srs = (SymbolicRegexMatcher<BDD>[])Array.ConvertAll(regexes, r => r.Compile());
 
-            //--- aut ---
-            int sr_tot_ms = System.Environment.TickCount;
-            int sr_tot_matches = 0;
-            for (int i = 0; i < k; i++)
-            {
-                //here we could also allow the regexes that timed out in .net
-                //but the Assert below would fail
-                if (!timeouts.Contains(i))
-                {
-                    var sr_matches = srs[i].Matches(str, matchlimit);
-                    sr_tot_matches += sr_matches.Length;
-                }
-            }
-            sr_tot_ms = System.Environment.TickCount - sr_tot_ms;
-            //--------------
+        //     ClearLog();
 
-            Log("AUT: " + sr_tot_ms);
+        //     int MAX = 10;
 
-            //--- deserialized versions ---
-            int sr_tot_ms_d = System.Environment.TickCount;
-            int sr_tot_matches_d = 0;
-            for (int i = 0; i < k; i++)
-            {
-                //here we could also allow the regexes that timed out in .net
-                //but the Assert below would fail
-                if (!timeouts.Contains(i))
-                {
-                    var sr_matches_d = srs_[i].Matches(str, matchlimit);
-                    sr_tot_matches_d += sr_matches_d.Length;
-                }
-            }
-            sr_tot_ms_d = System.Environment.TickCount - sr_tot_ms_d;
-            //--------------
+        //     //make sure k is at most regexes.Length, regexes.Length is around 1600
+        //     int k = (regexes.Length < MAX ? regexes.Length : MAX);
 
-            Assert.AreEqual<int>(sr_tot_matches, sr_tot_matches_d);
+        //     int sr_comp_ms = System.Environment.TickCount;
+        //     var srs = new IMatcher[k];
+        //     for (int i = 0; i < k; i++)
+        //         srs[i] = regexes[i].Compile();
+        //     sr_comp_ms = System.Environment.TickCount - sr_comp_ms;
 
-            Log("AUT_d: " + sr_tot_ms_d);
+        //     Log("Compile time(ms): " + sr_comp_ms);
 
-            //--- .net matching on regexes that did not timeout---
-            //use here trhe regexes with larger timeout to avoid borderline cases
-            int re_tot_ms = System.Environment.TickCount;
-            int re_tot_matches = 0;
-            for (int i = 0; i < k; i++)
-            {
-                if (!timeouts.Contains(i))
-                {
-                    var re_matches = regexes10[i].Matches(str);
-                    re_tot_matches += (matchlimit <= 0 ? re_matches.Count : Math.Min(re_matches.Count, matchlimit));
-                }
-            }
-            re_tot_ms = System.Environment.TickCount - re_tot_ms;
-            //--------------
+        //     //var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+        //     //var formatter = new System.Web.UI.ObjectStateFormatter();
+        //     //--- soap formatter does not support generic types
+        //     //var formatter = new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
+
+        //     int sr_ser_ms = System.Environment.TickCount;
+        //     for (int i = 0; i < k; i++)
+        //         SerializationTests.SerializeObjectToFile_soap(string.Format("sr{0}.soap", i), srs[i]);
+        //     sr_ser_ms = System.Environment.TickCount - sr_ser_ms;
+
+        //     Log("Serialization time(ms): " + sr_ser_ms);
+
+        //     int sr_deser_ms = System.Environment.TickCount;
+        //     var srs_ = new IMatcher[k];
+        //     for (int i = 0; i < k; i++)
+        //         srs_[i] = (IMatcher)SerializationTests.DeserializeObjectFromFile_soap(string.Format("sr{0}.soap", i));
+        //     sr_deser_ms = System.Environment.TickCount - sr_deser_ms;
+
+        //     Log("Deserialization time(ms): " + sr_deser_ms);
+
+        //     var str = File.ReadAllText(inputFile);
+
+        //     //first filter out those regexes that cause tiomeout in .net
+
+        //     HashSet<int> timeouts = new HashSet<int>();
+        //     timeouts.Add(4);
+        //     timeouts.Add(137);
 
 
-            Log(".NET: " + re_tot_ms);
+        //     //some regexes cause timeouts, exclude those
+        //     //--- .net ---
+        //     for (int i = 0; i < k; i++)
+        //     {
+        //         if (!timeouts.Contains(i))
+        //             try
+        //             {
+        //                 var re_matches = regexes[i].Matches(str);
+        //                 int tmp = re_matches.Count;
+        //                 Log("ok: " + i);
+        //             }
+        //             catch (System.Text.RegularExpressions.RegexMatchTimeoutException)
+        //             {
+        //                 timeouts.Add(i);
+        //                 Log("timeout: " + i);
+        //             }
+        //     }
 
-            //allow some variation (+- 5 in either direction)
-            Assert.IsTrue(sr_tot_matches <= re_tot_matches + 5);
-            Assert.IsTrue(re_tot_matches <= sr_tot_matches + 5);
+        //     //-------------
 
 
-            Console.WriteLine(string.Format("total: AUT:{0}ms osr deser{3}, .NET:{1}ms, matchcount={2}", sr_tot_ms, re_tot_ms, re_tot_matches, sr_tot_ms_d));
-        }
+        //     //--- aut ---
+        //     int sr_tot_ms = System.Environment.TickCount;
+        //     int sr_tot_matches = 0;
+        //     for (int i = 0; i < k; i++)
+        //     {
+        //         //here we could also allow the regexes that timed out in .net
+        //         //but the Assert below would fail
+        //         if (!timeouts.Contains(i))
+        //         {
+        //             var sr_matches = srs[i].Matches(str, matchlimit);
+        //             sr_tot_matches += sr_matches.Length;
+        //         }
+        //     }
+        //     sr_tot_ms = System.Environment.TickCount - sr_tot_ms;
+        //     //--------------
+
+        //     Log("AUT: " + sr_tot_ms);
+
+        //     //--- deserialized versions ---
+        //     int sr_tot_ms_d = System.Environment.TickCount;
+        //     int sr_tot_matches_d = 0;
+        //     for (int i = 0; i < k; i++)
+        //     {
+        //         //here we could also allow the regexes that timed out in .net
+        //         //but the Assert below would fail
+        //         if (!timeouts.Contains(i))
+        //         {
+        //             var sr_matches_d = srs_[i].Matches(str, matchlimit);
+        //             sr_tot_matches_d += sr_matches_d.Length;
+        //         }
+        //     }
+        //     sr_tot_ms_d = System.Environment.TickCount - sr_tot_ms_d;
+        //     //--------------
+
+        //     Assert.AreEqual<int>(sr_tot_matches, sr_tot_matches_d);
+
+        //     Log("AUT_d: " + sr_tot_ms_d);
+
+        //     //--- .net matching on regexes that did not timeout---
+        //     //use here trhe regexes with larger timeout to avoid borderline cases
+        //     int re_tot_ms = System.Environment.TickCount;
+        //     int re_tot_matches = 0;
+        //     for (int i = 0; i < k; i++)
+        //     {
+        //         if (!timeouts.Contains(i))
+        //         {
+        //             var re_matches = regexes10[i].Matches(str);
+        //             re_tot_matches += (matchlimit <= 0 ? re_matches.Count : Math.Min(re_matches.Count, matchlimit));
+        //         }
+        //     }
+        //     re_tot_ms = System.Environment.TickCount - re_tot_ms;
+        //     //--------------
+
+
+        //     Log(".NET: " + re_tot_ms);
+
+        //     //allow some variation (+- 5 in either direction)
+        //     Assert.IsTrue(sr_tot_matches <= re_tot_matches + 5);
+        //     Assert.IsTrue(re_tot_matches <= sr_tot_matches + 5);
+
+
+        //     Console.WriteLine(string.Format("total: AUT:{0}ms osr deser{3}, .NET:{1}ms, matchcount={2}", sr_tot_ms, re_tot_ms, re_tot_matches, sr_tot_ms_d));
+        // }
 
         [TestMethod]
         public void TestMatcher_InternalConsistency()
@@ -1112,25 +1112,26 @@ namespace Automata.Tests
                 Assert.IsTrue(r_matches[i].Index == matches[i].Item1 && r_matches[i].Length == matches[i].Item2);
         }
 
-        System.Runtime.Serialization.Formatters.Soap.SoapFormatter soap =
-            new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
+        // System.Runtime.Serialization.Formatters.Soap.SoapFormatter soap =
+        //     new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
 
         [TestMethod]
         public void TestWatchdogs()
         {
-            var r = new Regex("(?i:mar{4}gus|mar[gG]us|mar[kK]us|mam+a)");
-            var matcher_ = (SymbolicRegexUInt64)r.Compile();
-            matcher_.Serialize("test.soap", soap);
-            var matcher = (SymbolicRegexUInt64)RegexMatcher.Deserialize("test.soap", soap);
-            var input = "xxxxxxxxmarxxxxxxxmarrrrgusxxxmaRrrrgusxyzmarkusxxx";
-            var matches = matcher.Matches(input);
-            Assert.IsTrue(matches.Length == 3);
-            var regex_matches = r.Matches(input);
-            Assert.IsTrue(regex_matches.Count == 3);
-            for (int i = 0; i < 3; i++)
-                Assert.IsTrue(matches[i].Item1 == regex_matches[i].Index && matches[i].Item2 == regex_matches[i].Length);
-            //matcher.Pattern.ShowGraph(0,"regex_with_Watchdogs");
-            //matcher.DotStarPattern.ShowGraph(0, "dotstar_regex_with_Watchdogs", false, true);
+            throw new NotSupportedException("todo: soap format not supported");
+            // var r = new Regex("(?i:mar{4}gus|mar[gG]us|mar[kK]us|mam+a)");
+            // var matcher_ = (SymbolicRegexUInt64)r.Compile();
+            // matcher_.Serialize("test.soap", soap);
+            // var matcher = (SymbolicRegexUInt64)RegexMatcher.Deserialize("test.soap", soap);
+            // var input = "xxxxxxxxmarxxxxxxxmarrrrgusxxxmaRrrrgusxyzmarkusxxx";
+            // var matches = matcher.Matches(input);
+            // Assert.IsTrue(matches.Length == 3);
+            // var regex_matches = r.Matches(input);
+            // Assert.IsTrue(regex_matches.Count == 3);
+            // for (int i = 0; i < 3; i++)
+            //     Assert.IsTrue(matches[i].Item1 == regex_matches[i].Index && matches[i].Item2 == regex_matches[i].Length);
+            // //matcher.Pattern.ShowGraph(0,"regex_with_Watchdogs");
+            // //matcher.DotStarPattern.ShowGraph(0, "dotstar_regex_with_Watchdogs", false, true);
         }
 
         [TestMethod]
